@@ -1,0 +1,5 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: clsbank.com
+    Specs:
+      - Hostname: orderer

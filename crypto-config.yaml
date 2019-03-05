@@ -3,3 +3,26 @@ OrdererOrgs:
     Domain: clsbank.com
     Specs:
       - Hostname: orderer
+#  - Name: Orderer
+#    Domain: clsbank1.com
+#    Specs:
+#      - Hostname: orderer
+PeerOrgs:
+  - Name: CLSBank
+    Domain: clsbank.com  
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+  - Name: BankA
+    Domain: banka.com  
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+  - Name: BankB
+    Domain: bankb.com  
+    Template:
+      Count: 1
+    Users:
+      Count: 1

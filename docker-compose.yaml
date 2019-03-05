@@ -1,0 +1,104 @@
+version: '2'
+
+volumes:
+  orderer.clsbank.com:
+  peer0.banka.com:
+  peer0.bankb.com:
+  peer0.clsbank.com:
+
+networks:
+  clsnet:
+
+services:
+  ca.clsbank:
+    image: hyperledger/fabric-ca:latest
+    container_name: ca_CLSBank
+    networks:
+      - clsnet
+    volumes:
+      - ./crypto-config/peerOrganizations/clsbank.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-clsbank
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.clsbank.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ed90ba86fa6a82e2945406c65af56c96fb0b503b976c95b7571a09e992f0de42_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.clsbank.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ed90ba86fa6a82e2945406c65af56c96fb0b503b976c95b7571a09e992f0de42_sk -b admin:adminpw --loglevel info'
+
+  ca.banka:
+    image: hyperledger/fabric-ca:latest
+    container_name: ca_BankA
+    networks:
+      - clsnet
+    volumes:
+      - ./crypto-config/peerOrganizations/banka.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-banka
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.banka.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d3f8e016c25477b6061f18d2c5a7cd32b3d7356d13541aa9445174ee813bdd7e_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.banka.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/d3f8e016c25477b6061f18d2c5a7cd32b3d7356d13541aa9445174ee813bdd7e_sk -b admin:adminpw --loglevel info'
+
+  ca.bankb:
+    image: hyperledger/fabric-ca:latest
+    container_name: ca_BankB
+    networks:
+      - clsnet
+    volumes:
+      - ./crypto-config/peerOrganizations/bankb.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-bankb
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.bankb.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/61e3647aaf71481c63173e9c16e3330fe80ecd33fbafb077a6503a3d51510684_sk
+    ports:
+      - "9054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.bankb.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/61e3647aaf71481c63173e9c16e3330fe80ecd33fbafb077a6503a3d51510684_sk -b admin:adminpw --loglevel info'
+
+  orderer.clsbank.com:
+    container_name: orderer.clsbank.com
+    networks:
+      - clsnet
+    image: hyperledger/fabric-orderer:latest
+    volumes:
+    - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+    - ../crypto-config/ordererOrganizations/clsbank.com/orderers/orderer.clsank.com/msp:/var/hyperledger/orderer/msp
+    - ../crypto-config/ordererOrganizations/clsbank.com/orderers/orderer.clsbank.com/tls/:/var/hyperledger/orderer/tls
+#    - orderer.clsbank.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+    environment:
+      - ORDERER_GENERAL_LOGLEVEL=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]    
+    command: orderer
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+
+#  peer0.clsbank.com:
+#    container_name: peer0.clsbank.com
+#    networks:
+#      - clsnet
+#
+#  peer0.banka.com:
+#    container_name: peer0.banka.com
+#    networks:
+#      - clsnet
+#
+#  peer0.bankb.com:
+#    container_name: peer0.bankb.com
+#    networks:
+#      - clsnet

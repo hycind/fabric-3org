@@ -11,18 +11,6 @@ Capabilities:
         V1_2: true
         V1_1: true
 
-Profiles:
-  OrdererGenesis:
-
-  BanksABChannel:
-    Consortium: BankACLSBankBConsortium
-      Application:
-        Organizations:
-            Organizations:
-
-
-
-
 Organizations:
   - &OrdererOrg
     Name: OrdererOrg
@@ -53,6 +41,69 @@ Organizations:
       - Host: peer0.bankb.com
         Port: 7051
 
+Orderer: &OrdererDefaults
+  OrdererType: solo
+  Addresses:
+    - orderer.clsbank.com:7050
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 98 MB
+    PreferredMaxBytes: 512 KB
+  Kafka:
+    Brokers:
+      - 127.0.0.1:9092
+  MaxChannels: 0
+
+  Organizations:
+
+  # Policies:
+  #   Readers:
+  #     Type: ImplicitMeta
+  #     Rule: "ANY Readers"
+  #   Writers:
+  #     Type: ImplicitMeta
+  #     Rule: "ANY Writers"
+  #   Admins:
+  #     Type: ImplicitMeta
+  #     Rule: "MAJORITY Admins"
+  #   BlockValidation:
+  #     Type: ImplicitMeta
+  #     Rule: "ANY Writers"
+
+  Capabilities:
+    <<: *OrdererCapabilities
+
+Application: &ApplicationDefaults
+    Organizations:
+
+Profiles:
+  OrdererGenesis:
+    Capabilities:
+      <<: *ChannelCapabilities
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+    Consortiums:
+      SampleConsortium:
+        Organizations:
+          - *CLSBank
+          - *BankA
+          - *BankB
+                
+  BanksABChannel:
+    Consortium: BankACLSBankBConsortium
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *CLSBank
+        - *BankA
+        - *BankB
+      Capabilities:
+        <<: *ApplicationCapabilities
 
 
 

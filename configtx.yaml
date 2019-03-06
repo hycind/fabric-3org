@@ -1,14 +1,14 @@
 Capabilities:
     Global: &ChannelCapabilities
-        V1_3: true
+        V1_3: false
         V1_1: true
 
     Orderer: &OrdererCapabilities
         V1_1: true
 
     Application: &ApplicationCapabilities
-        V1_3: true
-        V1_2: true
+        V1_3: false
+        V1_2: false
         V1_1: true
 
 Organizations:

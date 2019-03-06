@@ -22,10 +22,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-clsbank
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.clsbank.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ed90ba86fa6a82e2945406c65af56c96fb0b503b976c95b7571a09e992f0de42_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b0da0c680f53c76225de446f16601476241e4f2985e7423db0669647e8559338_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.clsbank.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ed90ba86fa6a82e2945406c65af56c96fb0b503b976c95b7571a09e992f0de42_sk -b admin:adminpw --loglevel info'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.clsbank.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/b0da0c680f53c76225de446f16601476241e4f2985e7423db0669647e8559338_sk -b admin:adminpw --loglevel info'
 
   ca.banka:
     image: hyperledger/fabric-ca:latest
@@ -39,10 +39,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-banka
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.banka.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d3f8e016c25477b6061f18d2c5a7cd32b3d7356d13541aa9445174ee813bdd7e_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b6d47d63d9387cb4e168c691f2bd9391be4a0648baaa033db1f10187e62068d5_sk
     ports:
       - "8054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.banka.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/d3f8e016c25477b6061f18d2c5a7cd32b3d7356d13541aa9445174ee813bdd7e_sk -b admin:adminpw --loglevel info'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.banka.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/b6d47d63d9387cb4e168c691f2bd9391be4a0648baaa033db1f10187e62068d5_sk -b admin:adminpw --loglevel info'
 
   ca.bankb:
     image: hyperledger/fabric-ca:latest
@@ -56,10 +56,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-bankb
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.bankb.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/61e3647aaf71481c63173e9c16e3330fe80ecd33fbafb077a6503a3d51510684_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b9d7673319a68a6dbd780fceef668f7e66fd1ea2cdb036404663738cac13800a_sk
     ports:
       - "9054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.bankb.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/61e3647aaf71481c63173e9c16e3330fe80ecd33fbafb077a6503a3d51510684_sk -b admin:adminpw --loglevel info'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.bankb.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/b9d7673319a68a6dbd780fceef668f7e66fd1ea2cdb036404663738cac13800a_sk -b admin:adminpw --loglevel info'
 
   orderer.clsbank.com:
     container_name: orderer.clsbank.com
@@ -67,9 +67,9 @@ services:
       - clsnet
     image: hyperledger/fabric-orderer:latest
     volumes:
-    - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-    - ../crypto-config/ordererOrganizations/clsbank.com/orderers/orderer.clsank.com/msp:/var/hyperledger/orderer/msp
-    - ../crypto-config/ordererOrganizations/clsbank.com/orderers/orderer.clsbank.com/tls/:/var/hyperledger/orderer/tls
+    - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+    - ./crypto-config/ordererOrganizations/clsbank.com/orderers/orderer.clsbank.com/msp:/var/hyperledger/orderer/msp
+    - ./crypto-config/ordererOrganizations/clsbank.com/orderers/orderer.clsbank.com/tls/:/var/hyperledger/orderer/tls
 #    - orderer.clsbank.com:/var/hyperledger/production/orderer
     ports:
       - 7050:7050
